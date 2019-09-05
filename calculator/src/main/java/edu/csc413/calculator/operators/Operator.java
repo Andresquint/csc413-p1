@@ -18,6 +18,8 @@ public abstract class Operator {
     // operators.put( "+", new AdditionOperator() );
     // operators.put( "-", new SubtractionOperator() );
 
+    //public static HashMap operators = new HashMap();
+
     /**
      * used to get the priority of an operator
      *
