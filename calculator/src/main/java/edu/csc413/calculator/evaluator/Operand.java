@@ -8,22 +8,23 @@ public class Operand {
     /**
      * construct operand from string token.
      */
+    private int currentOperandValue = 0;
     public Operand(String token) {
-
+        currentOperandValue = Integer.parseInt(token);
     }
 
     /**
      * construct operand from integer
      */
     public Operand(int value) {
-
+        currentOperandValue = value;
     }
 
     /**
      * return value of operand
      */
     public int getValue() {
-        return 0;
+        return currentOperandValue;
     }
 
     /**
