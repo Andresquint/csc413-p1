@@ -1,11 +1,10 @@
 package edu.csc413.calculator.operators;
 
-public class AdditionOperator extends Operator{
-    AdditionOperator(){
-        string operator = "+";
+public class AddOperator extends Operator {
+    public int priority() {
+        return 3;
     }
-    public int priority()
-    {
-        return 4;
+    static {
+        operators.put("+", new AddOperator());
     }
 }
