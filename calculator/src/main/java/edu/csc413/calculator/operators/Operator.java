@@ -19,6 +19,15 @@ public abstract class Operator {
     // operators.put( "-", new SubtractionOperator() );
 
     public static HashMap<String, Operator> operators = new HashMap<>();
+    static {
+        operators.put("+", new AddOperator());
+        operators.put("-", new SubtractOperator());
+        operators.put("*", new MultiplyOperator());
+        operators.put("/", new DivideOperator());
+        operators.put("(", new LeftParentheses());
+        operators.put(")", new RightParentheses());
+        operators.put("^", new PowerOperator());
+    }
 
 
     /**
@@ -28,9 +37,7 @@ public abstract class Operator {
      */
     public abstract int priority();
 
-    public Operand execute(Operand op1, Operand op2) {
-        return null;
-    }
+    public abstract Operand execute(Operand op1, Operand op2);
 
 
     /**
@@ -40,7 +47,10 @@ public abstract class Operator {
      * Think about what happens if we add more operators.
      */
     public static boolean check(String token) {
-        return false;
+        System.out.print("contains? :");
+        System.out.print(token);
+        System.out.println(operators.containsKey(token));
+        return operators.containsKey(token);
     }
 
     /**
@@ -52,6 +62,9 @@ public abstract class Operator {
      * @return reference to a Operator instance.
      */
     public static Operator getOperator(String token) {
-        return null;
+        Operator op = operators.get(token);
+        System.out.print(op);
+        System.out.println("The set is: " + operators.keySet());
+        return operators.get(token);
     }
 }
