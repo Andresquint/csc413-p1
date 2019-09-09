@@ -8,7 +8,7 @@ public class Operand {
     /**
      * construct operand from string token.
      */
-    private int currentOperandValue = 0;
+    private int currentOperandValue;
     public Operand(String token) {
         currentOperandValue = Integer.parseInt(token);
     }
@@ -32,6 +32,8 @@ public class Operand {
      * operand.
      */
     public static boolean check(String token) {
-        return false;
+//        return Character.isDigit(token.charAt(0));
+        try{Integer.parseInt(token); return true;}
+        catch(Exception error){ return false;}
     }
 }
