@@ -5,10 +5,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.csc413.calculator.evaluator.Evaluator;
+
 public class EvaluatorUI extends JFrame implements ActionListener {
 
     private TextField txField = new TextField();
     private Panel buttonPanel = new Panel();
+
 
     // total of 20 buttons on the calculator,
     // numbered from left to right, top to bottom
@@ -32,6 +35,7 @@ public class EvaluatorUI extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
         this.txField.setPreferredSize(new Dimension(600, 50));
         this.txField.setFont(new Font("Courier", Font.BOLD, 28));
+        txField.setText("");
 
         add(txField, BorderLayout.NORTH);
         txField.setEditable(false);
@@ -67,11 +71,63 @@ public class EvaluatorUI extends JFrame implements ActionListener {
     /**
      * This function is triggered anytime a button is pressed
      * on our Calculator GUI.
+     *
      * @param eventObject Event object generated when a
      *                    button is pressed.
      */
     public void actionPerformed(ActionEvent eventObject) {
-
-
+        String temp = txField.getText();
+        if (eventObject.getSource() == buttons[0]) {
+            txField.setText(temp + "7");
+        } else if (eventObject.getSource() == buttons[1]) {
+            txField.setText(temp + "8");
+        } else if (eventObject.getSource() == buttons[2]) {
+            txField.setText(temp + "9");
+        } else if (eventObject.getSource() == buttons[3]) {
+            txField.setText(temp + "+");
+        } else if (eventObject.getSource() == buttons[4]) {
+            txField.setText(temp + "4");
+        } else if (eventObject.getSource() == buttons[5]) {
+            txField.setText(temp + "5");
+        } else if (eventObject.getSource() == buttons[6]) {
+            txField.setText(temp + "6");
+        } else if (eventObject.getSource() == buttons[7]) {
+            txField.setText(temp + "-");
+        } else if (eventObject.getSource() == buttons[8]) {
+            txField.setText(temp + "1");
+        } else if (eventObject.getSource() == buttons[9]) {
+            txField.setText(temp + "2");
+        } else if (eventObject.getSource() == buttons[10]) {
+            txField.setText(temp + "3");
+        } else if (eventObject.getSource() == buttons[11]) {
+            txField.setText(temp + "*");
+        } else if (eventObject.getSource() == buttons[12]) {
+            txField.setText(temp + "0");
+        } else if (eventObject.getSource() == buttons[13]) {
+            txField.setText(temp + "^");
+        } else if (eventObject.getSource() == buttons[14]) {
+            //evaluate expression and set text as result
+            try {
+                Evaluator ev = new Evaluator();
+                int res;
+                res = ev.eval(temp);
+                txField.setText(Integer.toString(res));
+            } catch (Exception error) {
+                System.out.println(error.getMessage());
+            }
+        } else if (eventObject.getSource() == buttons[15]) {
+            txField.setText(temp + "/");
+        } else if (eventObject.getSource() == buttons[16]) {
+            txField.setText(temp + "(");
+        } else if (eventObject.getSource() == buttons[17]) {
+            txField.setText(temp + ")");
+        } else if (eventObject.getSource() == buttons[18]) {
+            txField.setText("");
+        } else if (eventObject.getSource() == buttons[19]) {
+            if (Character.isDigit(temp.charAt(temp.length() - 1))) {
+                temp = temp.substring(0, temp.length() - 1);
+            }
+            txField.setText(temp);
+        }
     }
 }
