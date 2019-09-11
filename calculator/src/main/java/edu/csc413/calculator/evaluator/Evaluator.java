@@ -45,7 +45,7 @@ public class Evaluator {
                     //now that the token is valid, create a new operator using that token to work with
                     Operator newOperator = Operator.getOperator(token);
 
-                    if (token.equals("(") && !operatorStack.peek().equals(Operator.getOperator("("))) {
+                    if (token.equals("(")) {
                         operatorStack.push(Operator.getOperator("("));
                     } else if (token.equals(")")) {
                         while ((!operatorStack.peek().equals(Operator.getOperator("(")) && operandStack.size() > 1)) {
@@ -57,9 +57,9 @@ public class Evaluator {
                             Operand op2 = operandStack.pop();
                             Operand op1 = operandStack.pop();
                             operandStack.push(oldOpr.execute(op1, op2));
-                            if (operatorStack.peek().equals(Operator.getOperator("("))) {
-                                operatorStack.pop();
-                            }
+                        }
+                        if (operatorStack.peek().equals(Operator.getOperator("("))) {
+                            operatorStack.pop();
                         }
                         if (!newOperator.equals(Operator.getOperator(")")))
                             newOperator = Operator.getOperator(token);
