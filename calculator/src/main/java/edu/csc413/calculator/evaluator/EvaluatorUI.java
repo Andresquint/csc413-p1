@@ -75,6 +75,7 @@ public class EvaluatorUI extends JFrame implements ActionListener {
      * @param eventObject Event object generated when a
      *                    button is pressed.
      */
+    //pretty poor implementation of button actions, but it works...
     public void actionPerformed(ActionEvent eventObject) {
         String temp = txField.getText();
         if (eventObject.getSource() == buttons[0]) {
@@ -124,7 +125,8 @@ public class EvaluatorUI extends JFrame implements ActionListener {
         } else if (eventObject.getSource() == buttons[18]) {
             txField.setText("");
         } else if (eventObject.getSource() == buttons[19]) {
-            if (Character.isDigit(temp.charAt(temp.length() - 1))) {
+            //use substring to remove
+            while (Character.isDigit(temp.charAt(temp.length() - 1))) {
                 temp = temp.substring(0, temp.length() - 1);
             }
             txField.setText(temp);
