@@ -69,15 +69,25 @@ public class Evaluator {
                             Operand op1 = operandStack.pop();
                             operandStack.push(oldOpr.execute(op1, op2));
                         }
-                    //check for negative values by checking for "(-" in that order in the operatorStack
-                    //if "(-" is found, it will pop the subtraction operator and treat it as multiplying by -1 by calling multiplyOperator
-                    if ((operatorStack.size() > operandStack.size()) && operandStack.size() == 1 && 1 == operatorStack.search(Operator.getOperator("-"))){
+                    //check for negative values by checking for two operators with "-" on top of the operatorStack
+                    //if "-" is found on top and there are two operators consecutively in the expression, it will pop the subtraction operator and treat it as multiplying by -1 by calling multiplyOperator
+                    //first check for double negatives
+                    if ((operatorStack.size() > operandStack.size()) && operandStack.size() == 1 && 1 == operatorStack.search(Operator.getOperator("-")) && token.equals("-")){
+                        operatorStack.pop();
+                        Operand op1 = operandStack.pop();
+                        Operand op2 = new Operand(1);
+                        Operator tempAdd = Operator.getOperator("*");//AdditionOperator();
+                        operandStack.push(tempAdd.execute(op1, op2));
+                    }
+                    //second check for negatives beginning an expression segment
+                    else if ((operatorStack.size() > operandStack.size()) && operandStack.size() == 1 && 1 == operatorStack.search(Operator.getOperator("-"))){
                         operatorStack.pop();
                         Operand op1 = operandStack.pop();
                         Operand op2 = new Operand(-1);
                         Operator tempMult = Operator.getOperator("*");//MultiplyOperator();
                         operandStack.push(tempMult.execute(op1, op2));
                     }
+                    //push any operators other than "(" or ")" last
                     if (!newOperator.equals(Operator.getOperator(")")) && !newOperator.equals((Operator.getOperator("("))))
                         operatorStack.push(newOperator);
                 }
@@ -99,16 +109,6 @@ public class Evaluator {
             value = op1.getValue();
         }
 
-        // Control gets here when we've picked up all of the tokens; you must add
-        // code to complete the evaluation - consider how the code given here
-        // will evaluate the expression 1+2*3
-        // When we have no more tokens to scan, the operand stack will contain 1 2
-        // and the operator stack will have + * with 2 and * on the top;
-        // In order to complete the evaluation we must empty the stacks,
-        // that is, we should keep evaluating the operator stack until it is empty;
-        // Suggestion: create a method that processes the operator stack until empty.
-
-        //Don't forget to change the return value!
         return value;
     }
 }
