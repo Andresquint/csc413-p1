@@ -1,7 +1,5 @@
 package edu.csc413.calculator.evaluator;
 
-
-import edu.csc413.calculator.operators.LeftParentheses;
 import edu.csc413.calculator.operators.Operator;
 
 import java.util.Stack;
@@ -22,7 +20,7 @@ public class Evaluator {
         String token;
 
         //push a beginning operator to prevent popping empty stack in multiple places
-        operatorStack.push(new LeftParentheses());
+        operatorStack.push(Operator.getOperator("("));
 
         // The 3rd argument is true to indicate that the delimiters should be used
         // as tokens, too. But, we'll need to remember to filter out spaces.
@@ -42,6 +40,7 @@ public class Evaluator {
                         System.out.println("*****invalid token******");
                         throw new RuntimeException("*****invalid token******");
                     }
+
                     //now that the token is valid, create a new operator using that token to work with
                     Operator newOperator = Operator.getOperator(token);
 
@@ -70,6 +69,15 @@ public class Evaluator {
                             Operand op1 = operandStack.pop();
                             operandStack.push(oldOpr.execute(op1, op2));
                         }
+                    //check for negative values by checking for "(-" in that order in the operatorStack
+                    //if "(-" is found, it will pop the subtraction operator and treat it as multiplying by -1 by calling multiplyOperator
+                    if ((operatorStack.size() > operandStack.size()) && operandStack.size() == 1 && 1 == operatorStack.search(Operator.getOperator("-"))){
+                        operatorStack.pop();
+                        Operand op1 = operandStack.pop();
+                        Operand op2 = new Operand(-1);
+                        Operator tempMult = Operator.getOperator("*");//MultiplyOperator();
+                        operandStack.push(tempMult.execute(op1, op2));
+                    }
                     if (!newOperator.equals(Operator.getOperator(")")) && !newOperator.equals((Operator.getOperator("("))))
                         operatorStack.push(newOperator);
                 }
