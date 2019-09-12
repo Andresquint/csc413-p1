@@ -8,15 +8,18 @@ public abstract class Operator {
     // The Operator class should contain an instance of a HashMap.
     // The keys of the map will be the tokens we're interested in,
     // and values will be instances of Operator.
-    // ALL subclasses of operator MUST be in their own file.
-    // 
-    // Where does this declaration go?
-    // What should its access level be?
-    // Class or instance variable?
-    // Is this the right declaration?
-    // HashMap operators = new HashMap();
-    // operators.put( "+", new AdditionOperator() );
-    // operators.put( "-", new SubtractionOperator() );
+
+    public static HashMap<String, Operator> operators = new HashMap<>();
+
+    static {
+        operators.put("+", new AddOperator());
+        operators.put("-", new SubtractOperator());
+        operators.put("*", new MultiplyOperator());
+        operators.put("/", new DivideOperator());
+        operators.put("(", new LeftParentheses());
+        operators.put(")", new RightParentheses());
+        operators.put("^", new PowerOperator());
+    }
 
     /**
      * used to get the priority of an operator
@@ -25,10 +28,7 @@ public abstract class Operator {
      */
     public abstract int priority();
 
-    public Operand execute(Operand op1, Operand op2) {
-        return null;
-    }
-
+    public abstract Operand execute(Operand op1, Operand op2);
 
     /**
      * determines if a given token is a valid operator.
@@ -37,7 +37,7 @@ public abstract class Operator {
      * Think about what happens if we add more operators.
      */
     public static boolean check(String token) {
-        return false;
+        return operators.containsKey(token);
     }
 
     /**
@@ -49,6 +49,6 @@ public abstract class Operator {
      * @return reference to a Operator instance.
      */
     public static Operator getOperator(String token) {
-        return null;
+        return operators.get(token);
     }
 }
