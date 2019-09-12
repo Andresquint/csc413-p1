@@ -52,6 +52,7 @@ public class Evaluator {
                             // push the 1 then the 2 and then do the subtraction operation
                             // This means that the first number to be popped is the
                             // second operand, not the first operand - see the following code
+
                             Operator oldOpr = operatorStack.pop();
                             Operand op2 = operandStack.pop();
                             Operand op1 = operandStack.pop();
@@ -60,8 +61,7 @@ public class Evaluator {
                         if (operatorStack.peek().equals(Operator.getOperator("("))) {
                             operatorStack.pop();
                         }
-                        if (!newOperator.equals(Operator.getOperator(")")))
-                            newOperator = Operator.getOperator(token);
+
                     } else
                         while (!operatorStack.peek().equals(Operator.getOperator("(")) && !newOperator.equals((Operator.getOperator("("))) && operandStack.size() > 1 && operatorStack.peek().priority() >= newOperator.priority()) {
                             Operator oldOpr = operatorStack.pop();
@@ -69,24 +69,6 @@ public class Evaluator {
                             Operand op1 = operandStack.pop();
                             operandStack.push(oldOpr.execute(op1, op2));
                         }
-                    //check for negative values by checking for two operators with "-" on top of the operatorStack
-                    //if "-" is found on top and there are two operators consecutively in the expression, it will pop the subtraction operator and treat it as multiplying by -1 by calling multiplyOperator
-                    //first check for double negatives
-                    if ((operatorStack.size() > operandStack.size()) && operandStack.size() == 1 && 1 == operatorStack.search(Operator.getOperator("-")) && token.equals("-")){
-                        operatorStack.pop();
-                        Operand op1 = operandStack.pop();
-                        Operand op2 = new Operand(1);
-                        Operator tempAdd = Operator.getOperator("*");//AdditionOperator();
-                        operandStack.push(tempAdd.execute(op1, op2));
-                    }
-                    //second check for negatives beginning an expression segment
-                    else if ((operatorStack.size() > operandStack.size()) && operandStack.size() == 1 && 1 == operatorStack.search(Operator.getOperator("-"))){
-                        operatorStack.pop();
-                        Operand op1 = operandStack.pop();
-                        Operand op2 = new Operand(-1);
-                        Operator tempMult = Operator.getOperator("*");//MultiplyOperator();
-                        operandStack.push(tempMult.execute(op1, op2));
-                    }
                     //push any operators other than "(" or ")" last
                     if (!newOperator.equals(Operator.getOperator(")")) && !newOperator.equals((Operator.getOperator("("))))
                         operatorStack.push(newOperator);
@@ -108,7 +90,6 @@ public class Evaluator {
             Operand op1 = operandStack.pop();
             value = op1.getValue();
         }
-
         return value;
     }
 }
