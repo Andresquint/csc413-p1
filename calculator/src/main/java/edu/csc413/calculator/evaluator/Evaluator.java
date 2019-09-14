@@ -16,6 +16,17 @@ public class Evaluator {
         operatorStack = new Stack<>();
     }
 
+    private void calculateOperation() {
+        // note that when we eval the expression 1 - 2 we will
+        // push the 1 then the 2 and then do the subtraction operation
+        // This means that the first number to be popped is the
+        // second operand, not the first operand - see the following code
+        Operator oldOpr = operatorStack.pop();
+        Operand op2 = operandStack.pop();
+        Operand op1 = operandStack.pop();
+        operandStack.push(oldOpr.execute(op1, op2));
+    }
+
     public int eval(String expression) {
         String token;
 
@@ -25,7 +36,6 @@ public class Evaluator {
         // The 3rd argument is true to indicate that the delimiters should be used
         // as tokens, too. But, we'll need to remember to filter out spaces.
         this.tokenizer = new StringTokenizer(expression, DELIMITERS, true);
-
 
         while (this.tokenizer.hasMoreTokens()) {
             // filter out spaces
@@ -48,26 +58,14 @@ public class Evaluator {
                         operatorStack.push(Operator.getOperator("("));
                     } else if (token.equals(")")) {
                         while ((!operatorStack.peek().equals(Operator.getOperator("(")) && operandStack.size() > 1)) {
-                            // note that when we eval the expression 1 - 2 we will
-                            // push the 1 then the 2 and then do the subtraction operation
-                            // This means that the first number to be popped is the
-                            // second operand, not the first operand - see the following code
-
-                            Operator oldOpr = operatorStack.pop();
-                            Operand op2 = operandStack.pop();
-                            Operand op1 = operandStack.pop();
-                            operandStack.push(oldOpr.execute(op1, op2));
+                            calculateOperation();
                         }
                         if (operatorStack.peek().equals(Operator.getOperator("("))) {
                             operatorStack.pop();
                         }
-
                     } else
                         while (!operatorStack.peek().equals(Operator.getOperator("(")) && !newOperator.equals((Operator.getOperator("("))) && operandStack.size() > 1 && operatorStack.peek().priority() >= newOperator.priority()) {
-                            Operator oldOpr = operatorStack.pop();
-                            Operand op2 = operandStack.pop();
-                            Operand op1 = operandStack.pop();
-                            operandStack.push(oldOpr.execute(op1, op2));
+                            calculateOperation();
                         }
                     //push any operators other than "(" or ")" last
                     if (!newOperator.equals(Operator.getOperator(")")) && !newOperator.equals((Operator.getOperator("("))))
@@ -75,14 +73,10 @@ public class Evaluator {
                 }
             }
         }
-
         int value = 0;
         //run through all remaining operands
         while (operandStack.size() > 1) {
-            Operator testOp = operatorStack.pop();
-            Operand op2 = operandStack.pop();
-            Operand op1 = operandStack.pop();
-            operandStack.push(testOp.execute(op1, op2));
+            calculateOperation();
         }
         //get the last value in the operand stack
         if (operandStack.size() == 1) {
